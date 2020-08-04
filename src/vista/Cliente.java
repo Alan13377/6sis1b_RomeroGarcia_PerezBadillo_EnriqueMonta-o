@@ -81,7 +81,6 @@ DefaultTableModel modelo1 = new DefaultTableModel();
 	}
 
 	
-	
 	public Cliente() {
 		setTitle("Clientes");
 		setBounds(100, 100, 581, 530);
@@ -288,7 +287,7 @@ DefaultTableModel modelo1 = new DefaultTableModel();
 		if(fila ==-1) {
 			JOptionPane.showMessageDialog(null, "Seleccione fila");
 		}else {
-			cr.eliminar(ids);
+			cr.eliminar(id);
 		}
 	}
 	

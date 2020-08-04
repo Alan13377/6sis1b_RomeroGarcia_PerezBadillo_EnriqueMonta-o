@@ -1,57 +1,53 @@
 package modelo;
 
-import java.util.List;
-
-import vista.Cliente;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ClienteCrud implements CRUD{
+public class ProductoCrud implements CRUD{
 	Connection con;
 	Conexion cn = new Conexion();
 	PreparedStatement ps;
 	ResultSet rs;
 	
-	public ClienteM ListarId(String dni) {
-		ClienteM c = new ClienteM();
-		String sql = "select * from cliente where dni_cli=?";
+	public ProductoM ListarId(int ide) {
+		ProductoM p = new ProductoM();
+		
+		String sql = "select * from producto where id_prod=?";
 		try {
 			con = cn.conectar();
 			ps = con.prepareStatement(sql);
-			ps.setString(1,dni);
+			ps.setInt(1,ide);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				c.setId(rs.getInt(1));
-				c.setDni(rs.getString(2));
-				c.setNom(rs.getString(3));
-				c.setDir(rs.getString(4));
-				c.setEmail(rs.getString(5));
+				p.setId(rs.getInt(1));
+				p.setProd(rs.getString(2));
+				p.setPrecio(rs.getFloat(3));
+				p.setStock(rs.getInt(4));
 			}
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		return c;
+		return p;
 	}
 	@Override
 	
 	public List listar() {
-		List<ClienteM> lista = new ArrayList();
-		String sql = "SELECT * FROM cliente";
+		List<ProductoM> lista = new ArrayList();
+		String sql = "SELECT * FROM producto";
 		try {
 			con =cn.conectar();
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				ClienteM c = new ClienteM();
+				ProductoM c = new ProductoM();
 				c.setId(rs.getInt(1));
-				c.setDni(rs.getString(2));
-				c.setNom(rs.getString(3));
-				c.setDir(rs.getString(4));
-				c.setEmail(rs.getString(5));
+				c.setProd(rs.getString(2));
+				c.setPrecio(rs.getFloat(3));
+				c.setStock(rs.getInt(4));
 				lista.add(c);
 				
 			}
@@ -64,7 +60,7 @@ public class ClienteCrud implements CRUD{
 	}
 	@Override
 	public int add(Object[] o) {
-		String sql = "INSERT INTO cliente (dni_cli,nom_cli,direc_cli,email) values(?,?,?,?)";
+		String sql = "INSERT INTO producto (id_prod,nom_prod,Precio,Stock) values(?,?,?,?)";
 		int r = 0;
 		try {
 			con = cn.conectar();
@@ -85,7 +81,7 @@ public class ClienteCrud implements CRUD{
 	}
 	@Override
 	public int actualizar(Object[] o) {
-		String sql = "UPDATE cliente set dni_cli=?,nom_cli=?,direc_cli=?,email=? where id_cli =?";
+		String sql = "UPDATE producto set dni_cli=?,nom_cli=?,direc_cli=?,email=? where id_cli =?";
 		int r = 0;
 		try {
 			con = cn.conectar();
@@ -107,7 +103,7 @@ public class ClienteCrud implements CRUD{
 	}
 	@Override
 	public void eliminar(int id) {
-		String sql = "DELETE from cliente where id_cli=?";
+		String sql = "DELETE from producto where id_cli=?";
 		try {
 			con = cn.conectar();
 			ps = con.prepareStatement(sql);
@@ -118,6 +114,5 @@ public class ClienteCrud implements CRUD{
 		}
 		
 	}
-	
 	
 }
