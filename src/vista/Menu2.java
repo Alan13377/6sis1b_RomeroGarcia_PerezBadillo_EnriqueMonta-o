@@ -53,9 +53,7 @@ public class Menu2 extends JDialog {
 		inv.setIcon(iconoI);
 		inv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Almacen almacenes = new Almacen();
-				almacenes.setVisible(true);
-				dispose();
+				
 			}
 		});
 		contentPanel.setLayout(null);
@@ -135,6 +133,10 @@ public class Menu2 extends JDialog {
 		JButton btnProduccion = new JButton("Produccion");
 		btnProduccion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				Produccion produc = new Produccion();
+				produc.setVisible(true);
+				dispose();
 				
 			}
 		});
