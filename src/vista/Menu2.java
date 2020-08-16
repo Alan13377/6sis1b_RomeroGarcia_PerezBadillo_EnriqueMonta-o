@@ -72,6 +72,9 @@ public class Menu2 extends JDialog {
 		emp.setIcon(icono2);
 		emp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Empleado emp = new Empleado();
+				emp.setVisible(true);
+				dispose();
 			}
 		});
 		contentPanel.add(emp);
