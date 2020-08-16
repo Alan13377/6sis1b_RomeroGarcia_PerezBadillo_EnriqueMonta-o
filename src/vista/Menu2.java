@@ -53,7 +53,9 @@ public class Menu2 extends JDialog {
 		inv.setIcon(iconoI);
 		inv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				almacenes alm = new almacenes();
+				alm.setVisible(true);
+				dispose();
 			}
 		});
 		contentPanel.setLayout(null);
@@ -70,7 +72,6 @@ public class Menu2 extends JDialog {
 		emp.setIcon(icono2);
 		emp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 			}
 		});
 		contentPanel.add(emp);
@@ -85,7 +86,9 @@ public class Menu2 extends JDialog {
 		prov.setIcon(iconoP);
 		prov.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				Proveedor prov =new Proveedor();
+				prov.setVisible(true);
+				dispose();
 			}
 		});
 		contentPanel.add(prov);

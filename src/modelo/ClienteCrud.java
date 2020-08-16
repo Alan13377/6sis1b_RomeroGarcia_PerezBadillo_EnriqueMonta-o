@@ -14,7 +14,6 @@ public class ClienteCrud implements CRUD{
 	Conexion cn = new Conexion();
 	PreparedStatement ps;
 	ResultSet rs;
-	
 	public ClienteM ListarId(String dni) {
 		ClienteM c = new ClienteM();
 		String sql = "select * from cliente where dni_cli=?";

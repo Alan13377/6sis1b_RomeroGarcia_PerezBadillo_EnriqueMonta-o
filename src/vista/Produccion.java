@@ -8,7 +8,11 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -16,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
-
+import modelo.Conexion;
 
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
@@ -33,7 +37,11 @@ public class Produccion extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField id;
 	private JTable table;
+	PreparedStatement ps;
+	ResultSet rs;
 	private JTextField busqueda;
+	Connection con;
+	Conexion cn = new Conexion();
 
 	/**
 	 * Launch the application.
@@ -53,7 +61,7 @@ public class Produccion extends JDialog {
 	 */
 	public Produccion() {
 		setTitle("Produccion");
-		setBounds(100, 100, 559, 624);
+		setBounds(100, 100, 681, 413);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -65,7 +73,7 @@ public class Produccion extends JDialog {
 				System.exit(0);
 			}
 		});
-		btnNewButton.setBounds(432, 249, 95, 25);
+		btnNewButton.setBounds(222, 236, 89, 23);
 		contentPanel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Atras");
@@ -76,7 +84,7 @@ public class Produccion extends JDialog {
 				dispose();
 			}
 		});
-		btnNewButton_1.setBounds(432, 211, 95, 25);
+		btnNewButton_1.setBounds(121, 236, 89, 23);
 		contentPanel.add(btnNewButton_1);
 		
 		JLabel lblCodigo = new JLabel("Codigo:");
@@ -126,14 +134,45 @@ public class Produccion extends JDialog {
 		JButton btnConsulat = new JButton("Consultar");
 		btnConsulat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				String campo = busqueda.getText();
+				String where = "";
+				if(!"".equals(campo)) {
+					where = "WHERE id_prod = '" + campo +"'";
+				}
+        		try {
+        			DefaultTableModel modelo1 = new DefaultTableModel();
+        			con = cn.conectar();      
+        	        String sql = "SELECT id_prod, fecini_prod, fecter_prod, mod_prod, num_prod FROM eproduccion " + where;
+        	        ps = con.prepareStatement(sql);
+        	        rs = ps.executeQuery();
+        	        table.setModel(modelo1);
+        	        ResultSetMetaData rsMD = rs.getMetaData();
+        	        int cantidadColumnas = rsMD.getColumnCount();
+        	        modelo1.addColumn("Codigo");
+        	        modelo1.addColumn("Fecha Inicio");
+        	        modelo1.addColumn("Fecha Final");
+        	        modelo1.addColumn("Modelo");
+        	        modelo1.addColumn("Cantidad");
+        	        
+        	        while(rs.next()) {
+        	        	Object[]  filas = new Object[cantidadColumnas];
+        	        	
+        	        	for (int i = 0; i < cantidadColumnas; i++) {
+        					filas[i] = rs.getObject(i + 1 );
+        				}
+        	        	modelo1.addRow(filas);
+        	        }
+        	        		
+        		} catch (Exception e) {
+        			JOptionPane.showMessageDialog(null, "Error");
+        		}
 			}
 		});
-		btnConsulat.setBounds(413, 23, 97, 25);
+		btnConsulat.setBounds(12, 235, 97, 25);
 		contentPanel.add(btnConsulat);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 287, 515, 285);
+		scrollPane.setBounds(331, 11, 324, 248);
 		contentPanel.add(scrollPane);
 		
 		table = new JTable();
@@ -147,49 +186,118 @@ public class Produccion extends JDialog {
 		scrollPane.setViewportView(table);
 		
 		busqueda = new JTextField();
-		busqueda.setBounds(307, 25, 86, 20);
+		busqueda.setBounds(12, 287, 86, 20);
 		contentPanel.add(busqueda);
 		busqueda.setColumns(10);
 		
 		JButton btnNewButton_2 = new JButton("Guardar");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				try {
+					DefaultTableModel modelo1 = new DefaultTableModel();
+					con = cn.conectar();
+		            ps = con.prepareStatement("INSERT INTO eproduccion (id_prod, fecini_prod, fecter_prod, mod_prod, num_prod) VALUES(?,?,?,?,?) ");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String date = sdf.format(fecha1.getDate());
+					String date1 = sdf.format(fecha2.getDate());
+					ps.setString(1, id.getText());
+					ps.setString(2, date);
+					ps.setString(3,date1);
+		            ps.setString(4, prod.getSelectedItem().toString());
+		            ps.setString(5, cant.getValue().toString());
+		            int res = ps.executeUpdate();
+		            Object[] fila = new Object[5];
+		            fila[0] = id.getText();
+		            fila[1] = fecha1.getDate();
+		            fila[2] = fecha2.getDate();
+		            fila[3] = prod.getSelectedItem();
+		            fila[4] = cant.getValue();
+		            modelo1.addRow(fila);
+		            if(res > 0){
+		                JOptionPane.showMessageDialog(null, "Guardado");
+		            } else {
+		                 JOptionPane.showMessageDialog(null,"Error al Guardar Producto");
+		            }
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
-		btnNewButton_2.setBounds(12, 249, 95, 25);
+		btnNewButton_2.setBounds(162, 286, 89, 23);
 		contentPanel.add(btnNewButton_2);
 		
 		JButton modificar = new JButton("Modificar");
 		modificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				try {
+					DefaultTableModel modelo1 = new DefaultTableModel();
+					con = cn.conectar();
+		            ps = con.prepareStatement("UPDATE eproduccion SET id_prod=?, fecini_prod=?, fecter_prod=?, mod_prod=?, num_prod=? WHERE id_prod=? ");
+		            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String date = sdf.format(fecha1.getDate());
+					String date1 = sdf.format(fecha2.getDate());
+					ps.setString(1, id.getText());
+					ps.setString(2, date);
+					ps.setString(3,date1);
+		            ps.setString(4, prod.getSelectedItem().toString());
+		            ps.setString(5, cant.getValue().toString());
+		            ps.setString(6, busqueda.getText());
+		            int res = ps.executeUpdate();
+		            Object[] fila = new Object[5];
+		            fila[0] = id.getText();
+		            fila[1] = fecha1.getDate();
+		            fila[2] = fecha2.getDate();
+		            fila[3] = prod.getSelectedItem();
+		            fila[4] = cant.getValue();
+		            modelo1.addRow(fila);
+		            if(res > 0){
+		                JOptionPane.showMessageDialog(null, "Modificado");
+		            } else {
+		                 JOptionPane.showMessageDialog(null,"Error al Modificar Producto");
+		            }
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
-		modificar.setBounds(119, 246, 95, 25);
+		modificar.setBounds(273, 286, 89, 23);
 		contentPanel.add(modificar);
 		
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
+					DefaultTableModel modelo1 = new DefaultTableModel();
+					con = cn.conectar();
+		            int Fila = table.getSelectedRow();
+		            String codigo = table.getValueAt(Fila,0).toString();
+					ps = con.prepareStatement("DELETE FROM eproduccion  WHERE id_prod=? ");
+		            ps.setString(1,codigo);
+		            int res = ps.executeUpdate();
+		            modelo1.removeRow(Fila);
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
 			}
 		});
-		eliminar.setBounds(226, 249, 95, 25);
+		eliminar.setBounds(162, 322, 89, 23);
 		contentPanel.add(eliminar);
 		
-		JButton btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JButton btnNewButton_3 = new JButton("New button");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				id.setText("");
-				fecha1.setDate(null);
-				fecha2.setDate(null);
-				prod.setSelectedItem(null);
-				cant.setValue(0);
+	             fecha1.setDate(null);
+	             fecha2.setDate(null);
+	             prod.setSelectedItem(null);
+	             cant.setValue(0);
+	            
 			}
 		});
-		btnLimpiar.setBounds(333, 249, 95, 25);
-		contentPanel.add(btnLimpiar);
+		btnNewButton_3.setBounds(20, 318, 89, 23);
+		contentPanel.add(btnNewButton_3);
 		
 	}
 }

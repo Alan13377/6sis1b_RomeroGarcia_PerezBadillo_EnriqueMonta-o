@@ -12,6 +12,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -27,9 +30,11 @@ import com.toedter.calendar.JDateChooser;
 import modelo.ClienteCrud;
 import modelo.ClienteM;
 import modelo.Conexion;
+import modelo.Dventas;
 import modelo.ProductoCrud;
 import modelo.ProductoM;
 import modelo.VentasCRUD;
+import modelo.VentasM;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -40,6 +45,10 @@ public class Ventas extends JDialog {
 	ClienteCrud cdao = new ClienteCrud();
 	ProductoCrud pcrud = new ProductoCrud();
 	ProductoM p = new ProductoM();
+	VentasM v = new VentasM();
+	VentasCRUD vc = new VentasCRUD();
+	Dventas dvent = new Dventas();
+	ClienteM cliente = new ClienteM();
 	DefaultTableModel modelo = new DefaultTableModel();
 	private final JPanel content = new JPanel();
 	private JTextField id_1;
@@ -53,8 +62,12 @@ public class Ventas extends JDialog {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	private JDateChooser fecha1;
+	private JSpinner piezas;
 	int idp,cant;
 	double pre;
+	double pago = 0;
+	int numv = 0;
 	public static void main(String[] args) {
 		try {
 			Ventas dialog = new Ventas();
@@ -146,7 +159,7 @@ public class Ventas extends JDialog {
 			new Object[][] {
 			},
 			new String[] {
-				"NRO", "Codigo", "Producto", "Cantidad", "Precio", "Total"
+				"NRO", "Fecha", "Producto", "Cantidad", "Precio", "Total"
 			}
 		));
 		scrollPane.setViewportView(table);
@@ -259,6 +272,8 @@ public class Ventas extends JDialog {
 				idp = p.getId();
 				String nomprod= id_1.getText();
 				int ide = Integer.parseInt(id_1.getText());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(fecha1.getDate());
 				 pre =Double.parseDouble(cost.getText());
 				 cant = Integer.parseInt(piezas.getValue().toString());
 				int stock = Integer.parseInt(textField_3.getText());
@@ -267,7 +282,7 @@ public class Ventas extends JDialog {
 				ArrayList lista = new ArrayList();
 				if(stock>0) {
 					lista.add(cont);
-					lista.add(ide);
+					lista.add(date);
 					lista.add(nomprod);
 					lista.add(cant);
 					lista.add(pre);
@@ -288,7 +303,7 @@ public class Ventas extends JDialog {
 				
 			}
 			void Total() {
-				double pago = 0;
+				pago = 0;
 				for(int i = 0;i<table.getRowCount();i++) {
 					cant = Integer.parseInt(table.getValueAt(i,3).toString());
 					pre = Double.parseDouble(table.getValueAt(i,4).toString());
@@ -339,7 +354,35 @@ public class Ventas extends JDialog {
 		JLabel lblNewLabel_5 = new JLabel("Vende");
 		lblNewLabel_5.setBounds(267, 123, 46, 14);
 		content.add(lblNewLabel_5);
-
 		
+		JButton gnV = new JButton("Generar Venta");
+		gnV.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int idv = 1;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(fecha1.getDate());
+				pre =Double.parseDouble(cost.getText());
+				cant = Integer.parseInt(piezas.getValue().toString());
+				int ide =Integer.parseInt(id_cli.getText().toString());	
+				int idve = idv;
+				String p = piezas.getValue().toString();
+				String f= date;
+				
+				v.setIdCliente(ide);
+				v.setIdVendedor(idv);
+				v.setNumVentas(cant);
+				v.setFecha(date);
+				v.setMonto(pago);
+				vc.GuardarVentas(v)	;
+			
+			}
+
+			
+
+	
+		});
+		gnV.setBounds(144, 468, 117, 23);
+		content.add(gnV);
+
 	}	
 }

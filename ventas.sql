@@ -29,7 +29,7 @@ CREATE TABLE `cliente` (
   `direc_cli` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   PRIMARY KEY (`id_cli`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,8 +38,35 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (10,'3343','Karla','rom@gmail.com','Insurgentes'),(11,'44398','Aldair','San antonio','alda@gmail.com'),(12,'94950','Juan','Mixcoac','juan@gmail.com'),(19,'444488','Alan','Alvaro Obregon','alan@gmail.com'),(20,'3344','Carlos','Insurgentes','rom@gmail.com'),(23,'334858','Gustavo','Alvaro Obregon','alan@gmail.com');
+INSERT INTO `cliente` VALUES (10,'3343','Karla','rom@gmail.com','Insurgentes'),(11,'44398','Aldair','San antonio','alda@gmail.com'),(12,'94950','Juan','Mixcoac','juan@gmail.com'),(19,'444488','Alan','Alvaro Obregon','alan@gmail.com'),(20,'3344','Carlos','Insurgentes','rom@gmail.com'),(23,'334858','Gustavo','Alvaro Obregon','alan@gmail.com'),(27,'455','Maria','Mixcoac','mari@gmail.com');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cprovedor`
+--
+
+DROP TABLE IF EXISTS `cprovedor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cprovedor` (
+  `id_pro` int(11) NOT NULL AUTO_INCREMENT,
+  `nom_empresa` varchar(45) NOT NULL,
+  `ubi_pro` varchar(45) NOT NULL,
+  `tel_pro` int(11) NOT NULL,
+  `email_pro` varchar(45) NOT NULL,
+  PRIMARY KEY (`id_pro`)
+) ENGINE=InnoDB AUTO_INCREMENT=45563 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cprovedor`
+--
+
+LOCK TABLES `cprovedor` WRITE;
+/*!40000 ALTER TABLE `cprovedor` DISABLE KEYS */;
+INSERT INTO `cprovedor` VALUES (45562,'Chevorlet','Mixcoac',3455443,'chevo@gmail.com');
+/*!40000 ALTER TABLE `cprovedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -66,6 +93,60 @@ CREATE TABLE `dventas` (
 LOCK TABLES `dventas` WRITE;
 /*!40000 ALTER TABLE `dventas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `dventas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ealmacen`
+--
+
+DROP TABLE IF EXISTS `ealmacen`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ealmacen` (
+  `id_alm` int(11) NOT NULL AUTO_INCREMENT,
+  `arm_prod` varchar(45) NOT NULL,
+  `mod_prod` varchar(45) NOT NULL,
+  `num_exis` int(11) NOT NULL,
+  `ano_prod` date NOT NULL,
+  PRIMARY KEY (`id_alm`)
+) ENGINE=InnoDB AUTO_INCREMENT=23433 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ealmacen`
+--
+
+LOCK TABLES `ealmacen` WRITE;
+/*!40000 ALTER TABLE `ealmacen` DISABLE KEYS */;
+INSERT INTO `ealmacen` VALUES (23432,'Nissan','Chevrolet',0,'2020-09-08');
+/*!40000 ALTER TABLE `ealmacen` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `eproduccion`
+--
+
+DROP TABLE IF EXISTS `eproduccion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eproduccion` (
+  `id_prod` int(11) NOT NULL AUTO_INCREMENT,
+  `fecini_prod` date NOT NULL,
+  `fecter_prod` date NOT NULL,
+  `mod_prod` varchar(45) NOT NULL,
+  `num_prod` varchar(45) NOT NULL,
+  PRIMARY KEY (`id_prod`)
+) ENGINE=InnoDB AUTO_INCREMENT=94596 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `eproduccion`
+--
+
+LOCK TABLES `eproduccion` WRITE;
+/*!40000 ALTER TABLE `eproduccion` DISABLE KEYS */;
+INSERT INTO `eproduccion` VALUES (9549,'2020-08-13','2020-08-29','Aveo','4'),(94595,'2020-08-07','2020-08-21','Focus','2');
+/*!40000 ALTER TABLE `eproduccion` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -109,7 +190,7 @@ CREATE TABLE `vendedor` (
   `estado` varchar(45) NOT NULL,
   `user` varchar(45) NOT NULL,
   PRIMARY KEY (`id_vend`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,18 +199,18 @@ CREATE TABLE `vendedor` (
 
 LOCK TABLES `vendedor` WRITE;
 /*!40000 ALTER TABLE `vendedor` DISABLE KEYS */;
-INSERT INTO `vendedor` VALUES (1,'1337','Alan','5548585','Administrador','Alan'),(2,'74736','AlanYeren','54838575','Vendedor','Yeren'),(3,'39499','Enrique','5593994','Almacen','Enrique'),(4,'48384','Juan','64647384','Vendedor','Juan');
+INSERT INTO `vendedor` VALUES (1,'1337','Alan','5548585','Administrador','Alan'),(2,'74736','AlanYeren','54838575','Vendedor','Yeren'),(3,'39499','Enrique','5593994','Almacen','Enrique'),(4,'48384','Juan','64647384','Vendedor','Juan'),(5,'45678','Juan','Administrador','566646','Juan'),(6,'5677','Maria','Vendedor','455644','Maria'),(19,'4568','Carlos','Almacen','556633','Carlos');
 /*!40000 ALTER TABLE `vendedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ventas`
+-- Table structure for table `venta`
 --
 
-DROP TABLE IF EXISTS `ventas`;
+DROP TABLE IF EXISTS `venta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ventas` (
+CREATE TABLE `venta` (
   `id_venta` int(11) NOT NULL AUTO_INCREMENT,
   `id_cli` int(11) NOT NULL,
   `id_vend` int(11) NOT NULL,
@@ -137,16 +218,17 @@ CREATE TABLE `ventas` (
   `fecha` date NOT NULL,
   `monto` float NOT NULL,
   PRIMARY KEY (`id_venta`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ventas`
+-- Dumping data for table `venta`
 --
 
-LOCK TABLES `ventas` WRITE;
-/*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
+LOCK TABLES `venta` WRITE;
+/*!40000 ALTER TABLE `venta` DISABLE KEYS */;
+INSERT INTO `venta` VALUES (1,1,1,3,'2020-08-22',600),(2,44398,1,4,'2020-08-15',800),(3,44398,1,4,'2020-08-15',800),(4,44398,1,4,'2020-08-15',800),(5,94950,1,3,'2020-08-16',1250);
+/*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -322,4 +404,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-08 13:39:04
+-- Dump completed on 2020-08-16 12:14:23

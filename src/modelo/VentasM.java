@@ -1,10 +1,12 @@
 package modelo;
 
+import java.util.Date;
+
 public class VentasM {
 	int id;
 	int idCliente;
 	int idVendedor;
-	String serie;
+	int numVentas;
 	String fecha;
 	double monto;
 	
@@ -12,11 +14,11 @@ public class VentasM {
 		
 	}
 
-	public VentasM(int id, int idCliente, int idVendedor, String serie, String fecha, double monto) {
+	public VentasM(int id, int idCliente, int idVendedor, int numVentas, String fecha, double monto) {
 		this.id = id;
 		this.idCliente = idCliente;
 		this.idVendedor = idVendedor;
-		this.serie = serie;
+		this.numVentas = numVentas;
 		this.fecha = fecha;
 		this.monto = monto;
 	}
@@ -33,8 +35,8 @@ public class VentasM {
 		return idCliente;
 	}
 
-	public void setIdCliente(int idCliente) {
-		this.idCliente = idCliente;
+	public void setIdCliente(int id) {
+		this.idCliente = id;
 	}
 
 	public int getIdVendedor() {
@@ -45,12 +47,12 @@ public class VentasM {
 		this.idVendedor = idVendedor;
 	}
 
-	public String getSerie() {
-		return serie;
+	public int getNumVentas() {
+		return numVentas;
 	}
 
-	public void setSerie(String serie) {
-		this.serie = serie;
+	public void setNumVentas(int numVentas) {
+		this.numVentas = numVentas;
 	}
 
 	public String getFecha() {
@@ -68,6 +70,11 @@ public class VentasM {
 	public void setMonto(double monto) {
 		this.monto = monto;
 	}
+
+	public void setString(String date) {
+		// TODO Auto-generated method stub
+		
+	}
 	
-	
+
 }

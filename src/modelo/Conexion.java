@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class Conexion {
 	
 		private static final String Controlador = "com.mysql.jdbc.Driver";
-		private static final String URL = "jdbc:mysql://localhost:3306/autopartes?autoReconnect=true&useSSL=false";
+		private static final String URL = "jdbc:mysql://localhost:3306/ventas?autoReconnect=true&useSSL=false";
 		private static final String USUARIO = "root";
 		private static final String CLAVE = "1337259";
 		PreparedStatement ps;
