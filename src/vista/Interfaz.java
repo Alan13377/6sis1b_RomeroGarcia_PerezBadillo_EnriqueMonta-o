@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import modelo.Evendedor;
@@ -41,6 +42,7 @@ public class Interfaz extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
 					Interfaz frame = new Interfaz();
 					frame.setVisible(true);
 				} catch (Exception e) {

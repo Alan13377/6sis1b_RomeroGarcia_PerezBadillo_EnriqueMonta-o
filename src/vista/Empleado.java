@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import modelo.ClienteM;
+import modelo.Conexion;
 import modelo.Evendedor;
 import modelo.Vendedor;
 
@@ -53,9 +54,11 @@ public class Empleado extends JDialog {
 	ResultSet rs;
 	Vendedor vend = new Vendedor();
 	Evendedor even = new Evendedor();
+	Connection con;
+	Conexion cn = new Conexion();
 	int id;
 	
-	void listar() {
+	/*void listar() {
 		List<Evendedor> lista = vend.listar();
 		modelo1 = (DefaultTableModel)table.getModel();
 		Object[]ob = new Object[6];
@@ -70,7 +73,7 @@ public class Empleado extends JDialog {
 		}	
 		
 		table.setModel(modelo1);
-	}
+	}*/
 	
 	public static void main(String[] args) {
 		try {
@@ -87,7 +90,7 @@ public class Empleado extends JDialog {
 	 */
 	public Empleado() {
 		setTitle("Empleados");
-		setBounds(100, 100, 876, 651);
+		setBounds(100, 100, 624, 651);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(240, 240, 240));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -106,7 +109,7 @@ public class Empleado extends JDialog {
 		contentPanel.add(btnNewButton);
 		
 		JLabel lblDatosPersonales = new JLabel("Datos Personales --------------------------------------------------------------------------------------------\r\n\r\n");
-		lblDatosPersonales.setBounds(12, 13, 476, 16);
+		lblDatosPersonales.setBounds(12, 13, 576, 16);
 		contentPanel.add(lblDatosPersonales);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
@@ -132,6 +135,39 @@ public class Empleado extends JDialog {
 		JButton btnConsultar = new JButton("Consultar ");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try {
+					String campo = codigo.getText();
+					String where = "";
+					if(!"".equals(campo)) {
+						where = "WHERE id_vend = '" + campo +"'";
+					}
+					DefaultTableModel modelo1 = new DefaultTableModel();
+					con =cn.conectar();
+					String sql = "SELECT dni,nombre,telefono,estado,user FROM vendedor"+where;
+					
+					ps = con.prepareStatement(sql);
+					rs = ps.executeQuery();
+					table_1.setModel(modelo1);
+					ResultSetMetaData rsMD = rs.getMetaData();
+					int catidadColumnas = rsMD.getColumnCount();
+					modelo1.addColumn("codigo");
+					modelo1.addColumn("Nom");
+					
+					modelo1.addColumn("Puesto");
+					
+					modelo1.addColumn("Tele");
+					modelo1.addColumn("User");
+					while(rs.next()) {
+						Object[] filas = new Object[catidadColumnas];
+						
+						for (int i = 0; i < catidadColumnas; i++) {
+							filas[i] = rs.getObject(i + 1);
+						}
+						modelo1.addRow(filas);
+					}
+				}catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error");
+				}
 			}
 				
         	    
@@ -200,9 +236,10 @@ public class Empleado extends JDialog {
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				con =cn.conectar();
 				actualizar();
 				limpiarTabla();
-				listar();
+				//listar();
 			}
 		});
 		btnModificar.setBounds(132, 566, 97, 25);
@@ -213,7 +250,7 @@ public class Empleado extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				agregar();
 				limpiarTabla();
-				listar();
+				//listar();
 			}
 		});
 		btnGuardar.setBounds(252, 566, 97, 25);
@@ -222,12 +259,26 @@ public class Empleado extends JDialog {
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					DefaultTableModel modelo1 = new DefaultTableModel();
+					con =cn.conectar();
+		            int Fila = table_1.getSelectedRow();
+		            String codigo = table_1.getValueAt(Fila,0).toString();
+					ps = con.prepareStatement("DELETE FROM vendedor  WHERE dni=? ");
+		            ps.setString(1,codigo);
+		            int res = ps.executeUpdate();
+		            modelo1.removeRow(Fila);
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
 				eliminar();
 				limpiarTabla();
-				listar();
 			}
+				
+				//listar();
+			
 		});
-		eliminar.setBounds(499, 567, 89, 23);
+		eliminar.setBounds(481, 567, 107, 23);
 		contentPanel.add(eliminar);
 		
 		JButton btnNewButton_1 = new JButton("New button");
@@ -240,7 +291,7 @@ public class Empleado extends JDialog {
 	             user.setText(null);
 			}
 		});
-		btnNewButton_1.setBounds(488, 517, 89, 23);
+		btnNewButton_1.setBounds(481, 517, 107, 23);
 		contentPanel.add(btnNewButton_1);
 
 
