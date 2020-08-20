@@ -238,6 +238,7 @@ public class Ventas extends JDialog {
 			}
 
 			private void buscarProducto() {
+				int r=0;
 				 int ide = Integer.parseInt(id_1.getText());
 				if(id_1.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "No ingreso el producto");
@@ -248,8 +249,12 @@ public class Ventas extends JDialog {
 						cost.setText(""+p.getPrecio());
 						textField_3.setText(""+p.getStock());
 					}else {
-						JOptionPane.showMessageDialog(null, "No se encontro el producto");
-						id_1.requestFocus();
+						JOptionPane.showMessageDialog(null, "No encontrado");
+						if(r==0) {
+							Producto prod = new Producto();
+							prod.setVisible(true);
+					
+						}
 					}
 				}
 				
