@@ -81,7 +81,7 @@ public class ProductoCrud implements CRUD{
 	}
 	@Override
 	public int actualizar(Object[] o) {
-		String sql = "UPDATE producto set dni_cli=?,nom_cli=?,direc_cli=?,email=? where id_cli =?";
+		String sql = "UPDATE producto set nom_prod=?,Precio=?,Stock=? where id_prod=?";
 		int r = 0;
 		try {
 			con = cn.conectar();
@@ -90,14 +90,12 @@ public class ProductoCrud implements CRUD{
 			ps.setObject(2,o[1]);
 			ps.setObject(3,o[2]);
 			ps.setObject(4,o[3]);
-			ps.setObject(5,o[4]);
 			r = ps.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("No se pudo actualizar");
             System.out.println(e.getMessage());
             System.out.println(e.getStackTrace());
 		}
-		
 		
 		return r;
 	}
