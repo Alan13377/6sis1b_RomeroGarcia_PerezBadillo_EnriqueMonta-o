@@ -101,7 +101,7 @@ public class ProductoCrud implements CRUD{
 	}
 	@Override
 	public void eliminar(int id) {
-		String sql = "DELETE from producto where id_cli=?";
+		String sql = "DELETE from producto where id_prod=?";
 		try {
 			con = cn.conectar();
 			ps = con.prepareStatement(sql);
